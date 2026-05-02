@@ -1,0 +1,12 @@
+{
+  "name": "roblox-tailwind",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Tailwind": {
+        "$path": "src/"
+      }
+    }
+  }
+}
