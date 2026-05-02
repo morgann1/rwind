@@ -1,84 +1,47 @@
 --!strict
 
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local StyleSheet = require("@self/StyleSheet")
 
-local Typography = require("@self/StyleSheet/Typography")
-local buildStyleSheet = require("@self/StyleSheet")
-
-local SHEET_NAME = "rw_StyleSheet"
-
-local _sheet: StyleSheet? = nil
-local _registered: { [string]: true? } = {}
-
-local function ensure(tag: string)
-	if _registered[tag] ~= nil then
-		return
-	end
-	local registrar = Typography.RULES[tag]
-	if registrar == nil then
-		return
-	end
-	local sheet = _sheet
-	if sheet == nil then
-		return
-	end
-	registrar(sheet)
-	_registered[tag] = true
+local function capitalize(text: string): string
+	local result = string.gsub(text, "%a[%w']*", function(word)
+		local first = string.sub(word, 1, 1)
+		local rest = string.sub(word, 2)
+		return `{string.upper(first)}{string.lower(rest)}`
+	end)
+	return result
 end
 
-local function findExistingSheet(parent: Instance): StyleSheet?
-	local existing = parent:FindFirstChild(SHEET_NAME)
-	if existing ~= nil and existing:IsA("StyleSheet") then
-		return existing
-	end
-	return nil
-end
+local TRANSFORMS: { [string]: ((string) -> string)? } = {
+	["uppercase"] = string.upper,
+	["lowercase"] = string.lower,
+	["capitalize"] = capitalize,
+}
 
-local function install(parent: Instance?): StyleSheet
-	if _sheet ~= nil then
-		return _sheet
-	end
+local DECORATIONS: { [string]: { open: string, close: string }? } = {
+	["underline"] = { open = "<u>", close = "</u>" },
+	["line-through"] = { open = "<s>", close = "</s>" },
+}
 
-	local target = parent or ReplicatedStorage
-	local existing = findExistingSheet(target)
-	if existing ~= nil then
-		_sheet = existing
-		return existing
-	end
-
-	local sheet = buildStyleSheet()
-	sheet.Name = SHEET_NAME
-	sheet.Parent = target
-	_sheet = sheet
-	return sheet
-end
-
-local function mount(host: Instance, sheet: StyleSheet?): StyleLink
-	local resolved = sheet or _sheet or findExistingSheet(ReplicatedStorage)
-	assert(resolved ~= nil, "rwind.install must run before mount")
-
-	local link = Instance.new("StyleLink")
-	link.StyleSheet = resolved
-	link.Parent = host
-	return link
-end
-
-local function rw(...: string | false | nil): string
-	local tags: { string } = {}
-	for _, argument in { ... } do
-		if type(argument) ~= "string" then
-			continue
-		end
-		for tag in string.gmatch(argument, "%S+") do
-			ensure(tag)
-			table.insert(tags, tag)
+local function decorate(text: string, classes: string): string
+	local result = text
+	for class in string.gmatch(classes, "%S+") do
+		local transform = TRANSFORMS[class]
+		if transform ~= nil then
+			result = transform(result)
 		end
 	end
-	return table.concat(tags, " ")
+	for class in string.gmatch(classes, "%S+") do
+		local decoration = DECORATIONS[class]
+		if decoration ~= nil then
+			result = `{decoration.open}{result}{decoration.close}`
+		end
+	end
+	return result
 end
 
 return table.freeze({
-	install = install,
-	mount = mount,
-	rw = rw,
+	install = StyleSheet.install,
+	mount = StyleSheet.mount,
+	rw = StyleSheet.rw,
+	decorate = decorate,
 })

@@ -190,6 +190,8 @@ RULES["text-wrap"] = rule(".text-wrap", { TextWrapped = true })
 RULES["text-nowrap"] = rule(".text-nowrap", { TextWrapped = false })
 RULES["text-scaled"] = rule(".text-scaled", { TextScaled = true })
 RULES["rich-text"] = rule(".rich-text", { RichText = true })
+RULES["underline"] = rule(".underline", { RichText = true })
+RULES["line-through"] = rule(".line-through", { RichText = true })
 
 return table.freeze({
 	RULES = table.freeze(RULES),
