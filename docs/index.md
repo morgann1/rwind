@@ -5,10 +5,11 @@ layout: home
 hero:
   name: "rwind"
   text: "Tailwind-style utility classes for Roblox"
+  tagline: A small utility-first library for styling Roblox UI. If you've used Tailwind on the web, the class names here work the same way.
   actions:
     - theme: brand
       text: Get Started
-      link: /markdown-examples
+      link: /what-is-rwind
 
 features:
   - title: 💨 Tailwind names, unchanged
@@ -18,4 +19,3 @@ features:
   - title: 🪶 Pay for what you use
     details: A rule shows up in the sheet the first time you reference it. Skip text-creepster and it never exists.
 ---
-

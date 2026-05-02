@@ -15,15 +15,15 @@ export default defineConfig({
 
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: 'Guide', link: '/what-is-rwind' }
     ],
 
     sidebar: [
       {
-        text: 'Examples',
+        text: 'Guide',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: 'What is rwind?', link: '/what-is-rwind' },
+          { text: 'Getting Started', link: '/getting-started' }
         ]
       }
     ],
