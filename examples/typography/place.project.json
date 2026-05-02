@@ -1,0 +1,35 @@
+{
+  "name": "Typography",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Tailwind": {
+        "$path": "../../src"
+      },
+      "Packages": {
+        "$path": "../../DevPackages"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "Client": {
+          "$path": "src"
+        }
+      }
+    },
+    "Workspace": {
+      "$className": "Workspace",
+      "SpawnLocation": {
+        "$className": "SpawnLocation",
+        "$properties": {
+          "Anchored": true,
+          "Size": [6, 1, 6],
+          "Position": [0, 0, 0]
+        }
+      }
+    }
+  }
+}
