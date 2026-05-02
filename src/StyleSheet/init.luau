@@ -2,7 +2,8 @@
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Tokens = require("@self/Tokens")
+local Borders = require("@self/Borders")
+local Shadows = require("@self/Shadows")
 local Typography = require("@self/Typography")
 
 local SHEET_NAME = "rw_StyleSheet"
@@ -10,11 +11,13 @@ local SHEET_NAME = "rw_StyleSheet"
 local _sheet: StyleSheet? = nil
 local _registered: { [string]: true? } = {}
 
+type Registrar = (sheet: StyleSheet) -> ()
+
 local function ensure(tag: string)
 	if _registered[tag] ~= nil then
 		return
 	end
-	local registrar = Typography.RULES[tag]
+	local registrar: Registrar? = Typography.RULES[tag] or Borders.RULES[tag] or Shadows.RULES[tag]
 	if registrar == nil then
 		return
 	end
@@ -36,7 +39,6 @@ end
 
 local function buildStyleSheet(): StyleSheet
 	local sheet = Instance.new("StyleSheet")
-	Tokens.apply(sheet)
 	return sheet
 end
 
