@@ -1,7 +1,11 @@
 [package]
-name = "morgann1/roblox-tailwind"
+name = "morgann1/rwind"
 version = "0.1.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 
 [dependencies]
+
+[dev-dependencies]
+React = "jsdotlua/react@17.2.1"
+ReactRoblox = "jsdotlua/react-roblox@17.2.1"

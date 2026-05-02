@@ -1,6 +1,6 @@
 --!strict
 
-local Tokens = require(script.Tokens)
+local Tokens = require("@self/Tokens")
 
 local function buildStyleSheet(): StyleSheet
 	local sheet = Instance.new("StyleSheet")

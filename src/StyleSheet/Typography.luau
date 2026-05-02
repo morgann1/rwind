@@ -1,14 +1,19 @@
 --!strict
 
-local function createStyleRule(sheet: StyleSheet, selector: string, props: { [string]: any })
-	local rule = Instance.new("StyleRule")
-	rule.Selector = selector
-	rule:SetProperties(props)
-	rule.Parent = sheet
-	return rule
+local Palette = require("@self/Palette")
+
+export type Registrar = (sheet: StyleSheet) -> ()
+
+local function rule(selector: string, props: { [string]: any }): Registrar
+	return function(sheet: StyleSheet)
+		local styleRule = Instance.new("StyleRule")
+		styleRule.Selector = selector
+		styleRule:SetProperties(props)
+		styleRule.Parent = sheet
+	end
 end
 
-local function createFont(uri: string, weight: Enum.FontWeight?, style: Enum.FontStyle?): Font
+local function font(uri: string, weight: Enum.FontWeight?, style: Enum.FontStyle?): Font
 	return Font.new(uri, weight or Enum.FontWeight.Regular, style or Enum.FontStyle.Normal)
 end
 
@@ -53,118 +58,142 @@ local FONTS = table.freeze({
 	Guru = "rbxasset://fonts/families/Guru.json",
 })
 
-local FAMILY_RULES: { [string]: string } = table.freeze({
-	["rw-font-sans"] = FONTS.BuilderSans,
-	["rw-font-serif"] = FONTS.Merriweather,
-	["rw-font-mono"] = FONTS.BuilderMono,
-	["rw-font-builder"] = FONTS.BuilderSans,
-	["rw-font-builder-ext"] = FONTS.BuilderExtended,
-	["rw-font-roboto"] = FONTS.Roboto,
-	["rw-font-roboto-condensed"] = FONTS.RobotoCondensed,
-	["rw-font-roboto-mono"] = FONTS.RobotoMono,
-	["rw-font-source-sans"] = FONTS.SourceSansPro,
-	["rw-font-nunito"] = FONTS.Nunito,
-	["rw-font-montserrat"] = FONTS.Montserrat,
-	["rw-font-oswald"] = FONTS.Oswald,
-	["rw-font-josefin"] = FONTS.JosefinSans,
-	["rw-font-titillium"] = FONTS.TitilliumWeb,
-	["rw-font-jura"] = FONTS.Jura,
-	["rw-font-michroma"] = FONTS.Michroma,
-	["rw-font-inconsolata"] = FONTS.Inconsolata,
-	["rw-font-arimo"] = FONTS.Arimo,
-	["rw-font-accanthis"] = FONTS.AccanthisADF,
-	["rw-font-roman-antique"] = FONTS.RomanAntique,
-	["rw-font-balthazar"] = FONTS.Balthazar,
-	["rw-font-bangers"] = FONTS.Bangers,
-	["rw-font-fredoka"] = FONTS.FredokaOne,
-	["rw-font-luckiest"] = FONTS.LuckiestGuy,
-	["rw-font-sarpanch"] = FONTS.Sarpanch,
-	["rw-font-denk"] = FONTS.DenkOne,
-	["rw-font-amatic"] = FONTS.AmaticSC,
-	["rw-font-creepster"] = FONTS.Creepster,
-	["rw-font-highway"] = FONTS.HighwayGothic,
-	["rw-font-grenze"] = FONTS.GrenzeGotisch,
-	["rw-font-special-elite"] = FONTS.SpecialElite,
-	["rw-font-press-start"] = FONTS.PressStart2P,
-	["rw-font-comic"] = FONTS.ComicNeue,
-	["rw-font-indie-flower"] = FONTS.IndieFlower,
-	["rw-font-kalam"] = FONTS.Kalam,
-	["rw-font-patrick-hand"] = FONTS.PatrickHand,
-	["rw-font-permanent-marker"] = FONTS.PermanentMarker,
-	["rw-font-fondamento"] = FONTS.Fondamento,
-	["rw-font-guru"] = FONTS.Guru,
+local FAMILY_URIS: { [string]: string } = table.freeze({
+	["font-sans"] = FONTS.BuilderSans,
+	["font-serif"] = FONTS.Merriweather,
+	["font-mono"] = FONTS.BuilderMono,
+	["font-builder"] = FONTS.BuilderSans,
+	["font-builder-ext"] = FONTS.BuilderExtended,
+	["font-roboto"] = FONTS.Roboto,
+	["font-roboto-condensed"] = FONTS.RobotoCondensed,
+	["font-roboto-mono"] = FONTS.RobotoMono,
+	["font-source-sans"] = FONTS.SourceSansPro,
+	["font-nunito"] = FONTS.Nunito,
+	["font-montserrat"] = FONTS.Montserrat,
+	["font-oswald"] = FONTS.Oswald,
+	["font-josefin"] = FONTS.JosefinSans,
+	["font-titillium"] = FONTS.TitilliumWeb,
+	["font-jura"] = FONTS.Jura,
+	["font-michroma"] = FONTS.Michroma,
+	["font-inconsolata"] = FONTS.Inconsolata,
+	["font-arimo"] = FONTS.Arimo,
+	["font-accanthis"] = FONTS.AccanthisADF,
+	["font-roman-antique"] = FONTS.RomanAntique,
+	["font-balthazar"] = FONTS.Balthazar,
+	["font-bangers"] = FONTS.Bangers,
+	["font-fredoka"] = FONTS.FredokaOne,
+	["font-luckiest"] = FONTS.LuckiestGuy,
+	["font-sarpanch"] = FONTS.Sarpanch,
+	["font-denk"] = FONTS.DenkOne,
+	["font-amatic"] = FONTS.AmaticSC,
+	["font-creepster"] = FONTS.Creepster,
+	["font-highway"] = FONTS.HighwayGothic,
+	["font-grenze"] = FONTS.GrenzeGotisch,
+	["font-special-elite"] = FONTS.SpecialElite,
+	["font-press-start"] = FONTS.PressStart2P,
+	["font-comic"] = FONTS.ComicNeue,
+	["font-indie-flower"] = FONTS.IndieFlower,
+	["font-kalam"] = FONTS.Kalam,
+	["font-patrick-hand"] = FONTS.PatrickHand,
+	["font-permanent-marker"] = FONTS.PermanentMarker,
+	["font-fondamento"] = FONTS.Fondamento,
+	["font-guru"] = FONTS.Guru,
 })
 
 local WEIGHTS: { [string]: Enum.FontWeight } = table.freeze({
-	["rw-font-thin"] = Enum.FontWeight.Thin,
-	["rw-font-extralight"] = Enum.FontWeight.ExtraLight,
-	["rw-font-light"] = Enum.FontWeight.Light,
-	["rw-font-normal"] = Enum.FontWeight.Regular,
-	["rw-font-medium"] = Enum.FontWeight.Medium,
-	["rw-font-semibold"] = Enum.FontWeight.SemiBold,
-	["rw-font-bold"] = Enum.FontWeight.Bold,
-	["rw-font-extrabold"] = Enum.FontWeight.ExtraBold,
-	["rw-font-black"] = Enum.FontWeight.Heavy,
+	["font-thin"] = Enum.FontWeight.Thin,
+	["font-extralight"] = Enum.FontWeight.ExtraLight,
+	["font-light"] = Enum.FontWeight.Light,
+	["font-normal"] = Enum.FontWeight.Regular,
+	["font-medium"] = Enum.FontWeight.Medium,
+	["font-semibold"] = Enum.FontWeight.SemiBold,
+	["font-bold"] = Enum.FontWeight.Bold,
+	["font-extrabold"] = Enum.FontWeight.ExtraBold,
+	["font-black"] = Enum.FontWeight.Heavy,
 })
 
 local STYLES: { [string]: Enum.FontStyle } = table.freeze({
-	["rw-italic"] = Enum.FontStyle.Italic,
-	["rw-not-italic"] = Enum.FontStyle.Normal,
+	["italic"] = Enum.FontStyle.Italic,
+	["not-italic"] = Enum.FontStyle.Normal,
 })
 
-local FONT_SIZES = table.freeze({
-	["rw-text-xs"] = 10,
-	["rw-text-sm"] = 12,
-	["rw-text-base"] = 14,
-	["rw-text-lg"] = 18,
-	["rw-text-xl"] = 20,
-	["rw-text-2xl"] = 24,
-	["rw-text-3xl"] = 30,
-	["rw-text-4xl"] = 36,
-	["rw-text-5xl"] = 48,
-	["rw-text-6xl"] = 60,
+local FONT_SIZES: { [string]: number } = table.freeze({
+	["text-xs"] = 10,
+	["text-sm"] = 12,
+	["text-base"] = 14,
+	["text-lg"] = 18,
+	["text-xl"] = 20,
+	["text-2xl"] = 24,
+	["text-3xl"] = 30,
+	["text-4xl"] = 36,
+	["text-5xl"] = 48,
+	["text-6xl"] = 60,
+	["text-7xl"] = 72,
+	["text-8xl"] = 96,
+	["text-9xl"] = 128,
 })
 
-local function register(sheet: StyleSheet)
-	for tag, uri in FAMILY_RULES do
-		createStyleRule(sheet, `.{tag}`, {
-			FontFace = createFont(uri),
-		})
-	end
-	for tag, weight in WEIGHTS do
-		createStyleRule(sheet, `.{tag}`, {
-			FontFace = createFont(FONTS.BuilderSans, weight),
-		})
-	end
-	for tag, style in STYLES do
-		createStyleRule(sheet, `.{tag}`, {
-			FontFace = createFont(FONTS.BuilderSans, Enum.FontWeight.Regular, style),
-		})
-	end
-	for tag, size in FONT_SIZES do
-		createStyleRule(sheet, `.{tag}`, {
-			TextSize = size,
-		})
-	end
+local LINE_HEIGHTS: { [string]: number } = table.freeze({
+	["leading-none"] = 1,
+	["leading-tight"] = 1.25,
+	["leading-snug"] = 1.375,
+	["leading-normal"] = 1.5,
+	["leading-relaxed"] = 1.625,
+	["leading-loose"] = 2,
+	["leading-3"] = 0.75,
+	["leading-4"] = 1,
+	["leading-5"] = 1.25,
+	["leading-6"] = 1.5,
+	["leading-7"] = 1.75,
+	["leading-8"] = 2,
+	["leading-9"] = 2.25,
+	["leading-10"] = 2.5,
+})
 
-	createStyleRule(sheet, ".rw-text-left", { TextXAlignment = Enum.TextXAlignment.Left })
-	createStyleRule(sheet, ".rw-text-center", { TextXAlignment = Enum.TextXAlignment.Center })
-	createStyleRule(sheet, ".rw-text-right", { TextXAlignment = Enum.TextXAlignment.Right })
+local RULES: { [string]: Registrar } = {}
 
-	createStyleRule(sheet, ".rw-align-top", { TextYAlignment = Enum.TextYAlignment.Top })
-	createStyleRule(sheet, ".rw-align-middle", { TextYAlignment = Enum.TextYAlignment.Center })
-	createStyleRule(sheet, ".rw-align-bottom", { TextYAlignment = Enum.TextYAlignment.Bottom })
-
-	createStyleRule(sheet, ".rw-truncate", { TextTruncate = Enum.TextTruncate.AtEnd, TextWrapped = false })
-	createStyleRule(sheet, ".rw-text-wrap", { TextWrapped = true })
-	createStyleRule(sheet, ".rw-text-nowrap", { TextWrapped = false })
-	createStyleRule(sheet, ".rw-text-scaled", { TextScaled = true })
-	createStyleRule(sheet, ".rw-rich-text", { RichText = true })
+for tag, uri in FAMILY_URIS do
+	RULES[tag] = rule(`.{tag}`, { FontFace = font(uri) })
+end
+for tag, weight in WEIGHTS do
+	RULES[tag] = rule(`.{tag}`, { FontFace = font(FONTS.BuilderSans, weight) })
+end
+for tag, style in STYLES do
+	RULES[tag] = rule(`.{tag}`, { FontFace = font(FONTS.BuilderSans, Enum.FontWeight.Regular, style) })
+end
+for tag, size in FONT_SIZES do
+	RULES[tag] = rule(`.{tag}`, { TextSize = size })
+end
+for tag, height in LINE_HEIGHTS do
+	RULES[tag] = rule(`.{tag}`, { LineHeight = height })
 end
 
+for hue, palette in Palette.PALETTE do
+	for shade, color in palette do
+		local tag = `text-{hue}-{shade}`
+		RULES[tag] = rule(`.{tag}`, { TextColor3 = color })
+	end
+end
+
+RULES["text-white"] = rule(".text-white", { TextColor3 = Palette.WHITE })
+RULES["text-black"] = rule(".text-black", { TextColor3 = Palette.BLACK })
+RULES["text-transparent"] = rule(".text-transparent", { TextTransparency = 1 })
+
+RULES["text-left"] = rule(".text-left", { TextXAlignment = Enum.TextXAlignment.Left })
+RULES["text-center"] = rule(".text-center", { TextXAlignment = Enum.TextXAlignment.Center })
+RULES["text-right"] = rule(".text-right", { TextXAlignment = Enum.TextXAlignment.Right })
+RULES["align-top"] = rule(".align-top", { TextYAlignment = Enum.TextYAlignment.Top })
+RULES["align-middle"] = rule(".align-middle", { TextYAlignment = Enum.TextYAlignment.Center })
+RULES["align-bottom"] = rule(".align-bottom", { TextYAlignment = Enum.TextYAlignment.Bottom })
+RULES["truncate"] = rule(".truncate", { TextTruncate = Enum.TextTruncate.AtEnd, TextWrapped = false })
+RULES["text-wrap"] = rule(".text-wrap", { TextWrapped = true })
+RULES["text-nowrap"] = rule(".text-nowrap", { TextWrapped = false })
+RULES["text-scaled"] = rule(".text-scaled", { TextScaled = true })
+RULES["rich-text"] = rule(".rich-text", { RichText = true })
+
 return table.freeze({
-	register = register,
-	FAMILY_RULES = FAMILY_RULES,
+	RULES = table.freeze(RULES),
+	FAMILY_URIS = FAMILY_URIS,
 	WEIGHTS = WEIGHTS,
 	STYLES = STYLES,
 	FONTS = FONTS,
