@@ -3,6 +3,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Borders = require("@self/Borders")
+local Layout = require("@self/Layout")
 local Shadows = require("@self/Shadows")
 local Typography = require("@self/Typography")
 
@@ -17,7 +18,10 @@ local function ensure(tag: string)
 	if _registered[tag] ~= nil then
 		return
 	end
-	local registrar: Registrar? = Typography.RULES[tag] or Borders.RULES[tag] or Shadows.RULES[tag]
+	local registrar: Registrar? = Typography.RULES[tag]
+		or Borders.RULES[tag]
+		or Shadows.RULES[tag]
+		or Layout.RULES[tag]
 	if registrar == nil then
 		return
 	end
