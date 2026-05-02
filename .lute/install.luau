@@ -5,7 +5,7 @@ local io = require("@lute/io")
 local process = require("@lute/process")
 
 local SOURCEMAP = "sourcemap.json"
-local PROJECT = "default.project.json"
+local PROJECT = "dev.project.json"
 local PACKAGE_DIRS = { "Packages", "DevPackages", "ServerPackages" }
 
 local function step(label: string, args: { string })

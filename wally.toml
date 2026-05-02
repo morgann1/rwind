@@ -1,8 +1,32 @@
 [package]
 name = "morgann1/rwind"
 version = "0.1.0"
-registry = "https://github.com/UpliftGames/wally-index"
+license = "MIT"
+authors = ["morgann1"]
 realm = "shared"
+registry = "https://github.com/UpliftGames/wally-index"
+# homepage = ""
+repository = "https://github.com/morgann1/rwind"
+exclude = [
+    "examples/**",
+    ".lute/**",
+    ".vscode/**",
+    "DevPackages/**",
+    "Packages/**",
+    "ServerPackages/**",
+    "tmp/**",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "selene.toml",
+    "rokit.toml",
+    "sourcemap.json",
+    "wally.lock",
+    "dev.project.json",
+    "*.rbxl",
+    "*.rbxlx",
+    "*.rbxm",
+    "*.rbxmx",
+]
 
 [dependencies]
 

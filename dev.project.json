@@ -1,0 +1,24 @@
+{
+  "name": "roblox-tailwind",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Tailwind": {
+        "$path": "src"
+      },
+      "Packages": {
+        "$path": "DevPackages"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "TypographyExample": {
+          "$path": "examples/typography/src"
+        }
+      }
+    }
+  }
+}
