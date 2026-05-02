@@ -4,22 +4,18 @@ layout: home
 
 hero:
   name: "rwind"
-  text: "Tailwind-style utility classes for React-luau on Roblox."
-  tagline: My great project tagline
+  text: "Tailwind-style utility classes for Roblox"
   actions:
     - theme: brand
-      text: Markdown Examples
+      text: Get Started
       link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 💨 Tailwind names, unchanged
+    details: font-bold, text-2xl, text-blue-500 work the way you'd type them on the web. Nothing new to memorize.
+  - title: 🧱 Native StyleSheets, no runtime mutation
+    details: Each class compiles to a real StyleRule and applies through Roblox's cascade. Nothing mutates at runtime.
+  - title: 🪶 Pay for what you use
+    details: A rule shows up in the sheet the first time you reference it. Skip text-creepster and it never exists.
 ---
 
