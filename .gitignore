@@ -1,11 +1,22 @@
-# Project place file
+# Project place files
 /roblox-tailwind.rbxlx
+/place.rbxl
+/place.rbxlx
+examples/**/place.rbxl
+examples/**/place.rbxlx
 
 # Roblox Studio lock files
 /*.rbxlx.lock
 /*.rbxl.lock
+**/*.rbxl.lock
+**/*.rbxlx.lock
 
 sourcemap.json
+
+# Wally files
+Packages/
+DevPackages/
+ServerPackages/
 
 # Other
 tmp/

@@ -1,3 +1,7 @@
 {
-    "luau-lsp.sourcemap.autogenerate": true
+    "luau-lsp.sourcemap.autogenerate": true,
+    "luau-lsp.sourcemap.rojoProjectFile": "default.project.json",
+    "luau-lsp.platform.type": "roblox",
+    "luau-lsp.types.roblox": true,
+    "luau-lsp.completion.imports.enabled": true
 }
