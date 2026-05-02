@@ -42,6 +42,17 @@ local RING_WIDTHS: { [string]: number } = table.freeze({
 	["ring-8"] = 8,
 })
 
+-- BorderOffset / BorderStrokePosition only apply when ApplyStrokeMode is Border,
+-- which is what `ring-*` already sets. Pairing these with `border-*` (Contextual)
+-- has no visible effect.
+local RING_OFFSETS: { [string]: number } = table.freeze({
+	["ring-offset-0"] = 0,
+	["ring-offset-1"] = 1,
+	["ring-offset-2"] = 2,
+	["ring-offset-4"] = 4,
+	["ring-offset-8"] = 8,
+})
+
 local RULES: { [string]: Registrar } = {}
 
 for tag, radius in CORNER_RADII do
@@ -59,6 +70,20 @@ for tag, width in RING_WIDTHS do
 	})
 end
 
+for tag, offset in RING_OFFSETS do
+	RULES[tag] = rule(`.{tag}::UIStroke`, { BorderOffset = UDim.new(0, offset) })
+end
+
+RULES["ring-inset"] = rule(".ring-inset::UIStroke", {
+	BorderStrokePosition = Enum.BorderStrokePosition.Inner,
+})
+RULES["ring-outer"] = rule(".ring-outer::UIStroke", {
+	BorderStrokePosition = Enum.BorderStrokePosition.Outer,
+})
+RULES["ring-center"] = rule(".ring-center::UIStroke", {
+	BorderStrokePosition = Enum.BorderStrokePosition.Center,
+})
+
 for hue, palette in Palette.PALETTE do
 	for shade, color in palette do
 		local borderTag = `border-{hue}-{shade}`
@@ -70,6 +95,13 @@ for hue, palette in Palette.PALETTE do
 		})
 	end
 end
+
+RULES["stroke-contextual"] = rule(".stroke-contextual::UIStroke", {
+	ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual,
+})
+RULES["stroke-border"] = rule(".stroke-border::UIStroke", {
+	ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+})
 
 RULES["border-white"] = rule(".border-white::UIStroke", { Color = Palette.WHITE })
 RULES["border-black"] = rule(".border-black::UIStroke", { Color = Palette.BLACK })
@@ -87,4 +119,5 @@ return table.freeze({
 	CORNER_RADII = CORNER_RADII,
 	BORDER_WIDTHS = BORDER_WIDTHS,
 	RING_WIDTHS = RING_WIDTHS,
+	RING_OFFSETS = RING_OFFSETS,
 })
