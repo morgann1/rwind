@@ -1,5 +1,6 @@
 [package]
 name = "morgann1/rwind"
+description = "Tailwind-style utility classes for Roblox."
 version = "0.1.0"
 license = "MIT"
 authors = ["morgann1"]
