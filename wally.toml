@@ -5,7 +5,7 @@ license = "MIT"
 authors = ["morgann1"]
 realm = "shared"
 registry = "https://github.com/UpliftGames/wally-index"
-# homepage = ""
+homepage = "https://morgann1.github.io/rwind/"
 repository = "https://github.com/morgann1/rwind"
 exclude = [
     "examples/**",
