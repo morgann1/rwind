@@ -9,8 +9,16 @@ registry = "https://github.com/UpliftGames/wally-index"
 repository = "https://github.com/morgann1/rwind"
 exclude = [
     "examples/**",
+    "docs/**",
+    ".vitepress/**",
     ".lute/**",
     ".vscode/**",
+    ".github/**",
+    "node_modules/**",
+    "package.json",
+    "package-lock.json",
+    "bun.lock",
+    "bun.lockb",
     "DevPackages/**",
     "Packages/**",
     "ServerPackages/**",
