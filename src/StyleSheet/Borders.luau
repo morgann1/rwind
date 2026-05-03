@@ -42,9 +42,6 @@ local RING_WIDTHS: { [string]: number } = table.freeze({
 	["ring-8"] = 8,
 })
 
--- BorderOffset / BorderStrokePosition only apply when ApplyStrokeMode is Border,
--- which is what `ring-*` already sets. Pairing these with `border-*` (Contextual)
--- has no visible effect.
 local RING_OFFSETS: { [string]: number } = table.freeze({
 	["ring-offset-0"] = 0,
 	["ring-offset-1"] = 1,

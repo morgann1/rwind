@@ -13,11 +13,6 @@ local function rule(selector: string, props: { [string]: any }): Registrar
 	end
 end
 
--- Tailwind shadows are layered (e.g. shadow-md is two shadows). UIShadow allows
--- one pseudo-instance per element, so each scale collapses to the dominant
--- layer: vertical drop offset, blur, and a transparency tuned to roughly match
--- Tailwind's combined alpha. Rendering is gated behind a Roblox FFlag at the
--- time of writing — these rules apply silently until the engine flag flips.
 type ShadowSpec = { offset: UDim2, blur: UDim, transparency: number }
 
 local SHADOWS: { [string]: ShadowSpec } = table.freeze({
