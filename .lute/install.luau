@@ -1,22 +1,12 @@
 --!strict
 
 local fs = require("@lute/fs")
-local io = require("@lute/io")
-local process = require("@lute/process")
+
+local step = require("@lib/step")
 
 local SOURCEMAP = "sourcemap.json"
 local PROJECT = "dev.project.json"
 local PACKAGE_DIRS = { "Packages", "DevPackages", "ServerPackages" }
-
-local function step(label: string, args: { string })
-	io.write(`-> {label}\n`)
-	local result = process.run(args, { stdio = "inherit" })
-	if not result.ok then
-		io.write(`{label} failed (exit {result.exitcode})\n`)
-		process.exit(result.exitcode)
-		error("unreachable")
-	end
-end
 
 local function main()
 	step("wally install", { "wally", "install" })
