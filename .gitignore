@@ -13,6 +13,9 @@ examples/**/place.rbxlx
 
 sourcemap.json
 
+# Lute build cache
+.lute/cache/
+
 # Wally files
 Packages/
 DevPackages/
