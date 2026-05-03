@@ -14,7 +14,21 @@ local function rule(selector: string, props: { [string]: any }): Registrar
 end
 
 local OPACITIES: { number } = table.freeze({
-	0, 5, 10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90, 95, 100,
+	0,
+	5,
+	10,
+	20,
+	25,
+	30,
+	40,
+	50,
+	60,
+	70,
+	75,
+	80,
+	90,
+	95,
+	100,
 })
 
 local RULES: { [string]: Registrar } = {}
