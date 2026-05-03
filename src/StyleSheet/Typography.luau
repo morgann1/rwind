@@ -133,6 +133,10 @@ local FONT_SIZES: { [string]: number } = table.freeze({
 	["text-9xl"] = 128,
 })
 
+local OPACITIES: { number } = table.freeze({
+	0, 5, 10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90, 95, 100,
+})
+
 local LINE_HEIGHTS: { [string]: number } = table.freeze({
 	["leading-none"] = 1,
 	["leading-tight"] = 1.25,
@@ -178,6 +182,11 @@ end
 RULES["text-white"] = rule(".text-white", { TextColor3 = Palette.WHITE })
 RULES["text-black"] = rule(".text-black", { TextColor3 = Palette.BLACK })
 RULES["text-transparent"] = rule(".text-transparent", { TextTransparency = 1 })
+
+for _, opacity in OPACITIES do
+	local tag = `text-opacity-{opacity}`
+	RULES[tag] = rule(`.{tag}`, { TextTransparency = 1 - opacity / 100 })
+end
 
 RULES["text-left"] = rule(".text-left", { TextXAlignment = Enum.TextXAlignment.Left })
 RULES["text-center"] = rule(".text-center", { TextXAlignment = Enum.TextXAlignment.Center })
