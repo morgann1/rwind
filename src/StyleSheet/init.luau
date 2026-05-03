@@ -2,6 +2,7 @@
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local Backgrounds = require("@self/Backgrounds")
 local Borders = require("@self/Borders")
 local Layout = require("@self/Layout")
 local Shadows = require("@self/Shadows")
@@ -22,6 +23,7 @@ local function ensure(tag: string)
 		or Borders.RULES[tag]
 		or Shadows.RULES[tag]
 		or Layout.RULES[tag]
+		or Backgrounds.RULES[tag]
 	if registrar == nil then
 		return
 	end
