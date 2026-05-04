@@ -7,6 +7,7 @@ local Borders = require("@self/Borders")
 local Layout = require("@self/Layout")
 local Shadows = require("@self/Shadows")
 local Sizing = require("@self/Sizing")
+local Spacing = require("@self/Spacing")
 local Typography = require("@self/Typography")
 
 local SHEET_NAME = "rw_StyleSheet"
@@ -26,6 +27,7 @@ local function ensure(tag: string)
 		or Layout.RULES[tag]
 		or Backgrounds.RULES[tag]
 		or Sizing.RULES[tag]
+		or Spacing.RULES[tag]
 	if registrar == nil then
 		return
 	end
